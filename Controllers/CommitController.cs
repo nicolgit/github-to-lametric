@@ -27,7 +27,7 @@ namespace github_to_lametric.Controllers
         private const string ICON = "#2800";
 
         [HttpGet]
-        public async Task<LametricRootObject> Get([FromQuery]string repository,[FromQuery]string branch, [FromQuery]int last)
+        public async Task<LametricRootObject> Get([FromQuery]string repository,[FromQuery]string branch, [FromQuery]int last,[FromQuery] string displayname)
         {
             HttpClient client = new HttpClient();
             
@@ -53,7 +53,7 @@ namespace github_to_lametric.Controllers
                     var f = new Frame();
                     f.icon = ICON;
                     f.index = i;
-                    f.text = $"{repository}: {atomRootObject.feed.entry[i].author.name} have commited { cleanTitle(atomRootObject.feed.entry[i].title)} { makeElapsedString(atomRootObject.feed.entry[i].updated)} ago";
+                    f.text = $"{displayname}: {atomRootObject.feed.entry[i].author.name} have commited { cleanTitle(atomRootObject.feed.entry[i].title)} { makeElapsedString(atomRootObject.feed.entry[i].updated)} ago";
 
                     root.frames.Add(f);
                 }
