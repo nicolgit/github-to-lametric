@@ -24,7 +24,7 @@ namespace github_to_lametric.Controllers
             _logger = logger;
         }
 
-        private const string ICON = "#2800";
+        private const string ICON = "i2800";
 
         [HttpGet]
         public async Task<LametricRootObject> Get([FromQuery]string repository,[FromQuery]string branch, [FromQuery]int last,[FromQuery] string displayname)
