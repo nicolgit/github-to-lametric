@@ -53,7 +53,7 @@ namespace github_to_lametric.Controllers
                     var f = new Frame();
                     f.icon = ICON;
                     f.index = i;
-                    f.text = $"{displayname}: {atomRootObject.feed.entry[i].author.name} have commited { cleanTitle(atomRootObject.feed.entry[i].title)} { makeElapsedString(atomRootObject.feed.entry[i].updated)} ago";
+                    f.text = $"{displayname}: {atomRootObject.feed.entry[i].author.name} have commited '{ cleanTitle(atomRootObject.feed.entry[i].title)}' { makeElapsedString(atomRootObject.feed.entry[i].updated)} ago";
 
                     root.frames.Add(f);
                 }
@@ -64,8 +64,7 @@ namespace github_to_lametric.Controllers
 
         private string cleanTitle(string title)
         {
-            var output = title.Replace("\n", " ");
-            return output.Trim();
+            return title.Replace("\r", " ").Replace("\n", " ").Trim();
         }
 
         private string makeElapsedString(DateTime updated)
