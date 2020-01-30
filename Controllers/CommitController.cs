@@ -7,7 +7,7 @@ using github_to_lametric.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Xml;
-using github_to_lametric.Artifacts.Exceptions;
+using github_to_lametric.Helpers.Exceptions;
 
 namespace github_to_lametric.Controllers
 {
