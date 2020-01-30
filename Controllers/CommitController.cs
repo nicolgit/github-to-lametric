@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using github_to_lametric.Models;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Xml.Linq;
 using Newtonsoft.Json;
 using System.Xml;
+using github_to_lametric.Artifacts.Exceptions;
 
 namespace github_to_lametric.Controllers
 {
@@ -34,6 +32,11 @@ namespace github_to_lametric.Controllers
             root.frames = new List<Frame>();
             try
             {
+                if (last<1)
+                    {
+                        throw new LastValueException();
+                    }
+
                 HttpClient client = new HttpClient();
             
                 client.DefaultRequestHeaders.Accept .Clear();
@@ -62,9 +65,17 @@ namespace github_to_lametric.Controllers
                 }
 
             }
-            catch (Exception e)
+            catch (HttpRequestException e)
+            {
+                root.frames.Add(new Frame(999, ICON_ERROR, $"ERR01: {repository}/{branch} - {e.Message}"));
+            }
+            catch (MyManagedException e)
             {
                 root.frames.Add(new Frame(999, ICON_ERROR, e.Message));
+            }
+            catch (Exception e)
+            {
+                root.frames.Add(new Frame(999, ICON_ERROR, $"ERR99: {e.Message}"));
             }
             
             return root;
