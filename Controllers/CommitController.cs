@@ -8,6 +8,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Xml;
 using github_to_lametric.Helpers.Exceptions;
+using Humanizer;
 
 namespace github_to_lametric.Controllers
 {
@@ -58,7 +59,7 @@ namespace github_to_lametric.Controllers
                         var f = new Frame();
                         f.icon = ICON;
                         f.index = i;
-                        f.text = $"{displayname}: {atomRootObject.feed.entry[i].author.name} have commited '{ cleanTitle(atomRootObject.feed.entry[i].title)}' { makeElapsedString(atomRootObject.feed.entry[i].updated)} ago";
+                        f.text = $"{displayname}: {atomRootObject.feed.entry[i].author.name} have commited '{ cleanTitle(atomRootObject.feed.entry[i].title)}' { DateTime.UtcNow.Add(atomRootObject.feed.entry[i].updated-DateTime.Now).Humanize() }";
 
                         root.frames.Add(f);
                     }
@@ -86,25 +87,5 @@ namespace github_to_lametric.Controllers
             return title.Replace("\r", " ").Replace("\n", " ").Trim();
         }
 
-        private string makeElapsedString(DateTime updated)
-        {
-            string time = "";
-            var diff = (DateTime.Now - updated);
-
-            if (diff.TotalDays > 1)
-            {
-                time = $"{(int)diff.TotalDays} days";
-            }
-            else if (diff.TotalHours > 1)
-            {
-                time = $"{(int)diff.TotalHours} hours";
-            }
-            else if (diff.TotalMinutes > 1)
-            {
-                time = $"{(int)diff.TotalMinutes} minutes";
-            }
-
-            return time;
-        }
     }
 }
