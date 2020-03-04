@@ -33,17 +33,28 @@ namespace github_to_lametric.Controllers
             root.frames = new List<Frame>();
             try
             {
+                if (string.IsNullOrEmpty(repository))
+                {
+                    throw new RepositoryMissingException();
+                }
+
                 if (last<1)
-                    {
-                        throw new LastValueException();
-                    }
+                {
+                    throw new LastValueException();
+                }
+
+                if (string.IsNullOrEmpty(branch))
+                {
+                    throw new BranchMissingException();
+                }
 
                 HttpClient client = new HttpClient();
             
                 client.DefaultRequestHeaders.Accept .Clear();
                 client.DefaultRequestHeaders.Add("User-Agent", "github-to-lametric");
 
-                var stringTask = client.GetStringAsync($"https://github.com/{repository}/commits/{branch}.atom");
+                var url = $"https://github.com/{repository}/commits/{branch}.atom";
+                var stringTask = client.GetStringAsync(url);
                 var xml = await stringTask;
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(xml);
@@ -59,7 +70,10 @@ namespace github_to_lametric.Controllers
                         var f = new Frame();
                         f.icon = ICON;
                         f.index = i;
-                        f.text = $"{displayname}: {atomRootObject.feed.entry[i].author.name} have commited '{ cleanTitle(atomRootObject.feed.entry[i].title)}' { DateTime.UtcNow.Add(atomRootObject.feed.entry[i].updated-DateTime.Now).Humanize() }";
+
+                        var dateDiff = DateTime.Now.Add(atomRootObject.feed.entry[i].updated-DateTime.Now);
+
+                        f.text = $"{displayname}: {atomRootObject.feed.entry[i].author.name} have commited '{ cleanTitle(atomRootObject.feed.entry[i].title)}' { dateDiff.Humanize() }";
 
                         root.frames.Add(f);
                     }

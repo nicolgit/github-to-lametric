@@ -19,4 +19,17 @@ namespace github_to_lametric.Helpers.Exceptions
     {
         public LastValueException() : base("ERR02: 'last' must be greather than zero") { }
     }
+
+    [System.Serializable]
+    public class BranchMissingException : MyManagedException
+    {
+        public BranchMissingException() : base("ERR03: 'branch' must be not empty or null (i.e. master)") { }
+    }
+
+    [System.Serializable]
+    public class RepositoryMissingException : MyManagedException
+    {
+        public RepositoryMissingException() : base("ERR04: 'Repository' must be not empty or null") { }
+    }
+
 }
