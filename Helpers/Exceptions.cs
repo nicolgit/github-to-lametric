@@ -32,4 +32,14 @@ namespace github_to_lametric.Helpers.Exceptions
         public RepositoryMissingException() : base("ERR04: 'Repository' must be not empty or null") { }
     }
 
+    public class UserMissingException : MyManagedException
+    {
+        public UserMissingException() : base("ERR05: 'Username' must be not empty or null") { }
+    }
+
+     public class DisplaynameMissingException : MyManagedException
+    {
+        public DisplaynameMissingException() : base("ERR05: 'Displayname' must be not empty or null") { }
+    }
+
 }
